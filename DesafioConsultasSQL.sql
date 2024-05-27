@@ -1,100 +1,99 @@
--- 1 - Buscar o nome e ano dos filmes
-SELECT Nome, Ano FROM Filmes;
+-- 1 - Obter o título e o ano dos filmes
+SELECT Titulo, Ano FROM Filmes;
 
-
--- 2 - Buscar o nome e ano dos filmes, ordenados por ordem crescente pelo ano
+-- 2 - Obter o título e o ano dos filmes, ordenados em ordem crescente por ano
 SELECT 
-	Nome, Ano, Duracao 
+    Titulo, Ano, Duracao 
 FROM 
-	Filmes 
-ORDER BY Ano;
+    Filmes 
+ORDER BY Ano ASC;
 
-
--- 3 - Buscar pelo filme de volta para o futuro, trazendo o nome, ano e a dura��o
+-- 3 - Obter informações do filme "De Volta para o Futuro", incluindo título, ano e duração
 SELECT 
-	Nome, Ano, Duracao 
+    Titulo, Ano, Duracao 
 FROM 
-	Filmes
-WHERE Nome = 'de volta para o futuro';
+    Filmes
+WHERE Titulo = 'De Volta para o Futuro';
 
-
--- 4 Buscar os filmes lan�ados em 1997
+-- 4 - Listar filmes lançados no ano de 1997
 SELECT 
-	Nome, Ano, Duracao 
+    Titulo, Ano, Duracao 
 FROM 
-	Filmes
+    Filmes
 WHERE Ano = 1997;
 
-
--- 5 - Buscar os filmes lan�ados AP�S o ano 2000
+-- 5 - Listar filmes lançados após o ano 2000
 SELECT 
-	Nome, Ano, Duracao 
+    Titulo, Ano, Duracao 
 FROM 
-	Filmes
+    Filmes
 WHERE Ano > 2000;
 
-
--- 6 - Buscar os filmes com a duracao maior que 100 e menor que 150, ordenando pela duracao em ordem crescente
+-- 6 - Obter filmes com duração entre 100 e 150 minutos, ordenados por duração em ordem crescente
 SELECT 
-	Nome, Ano, Duracao 
+    Titulo, Ano, Duracao 
 FROM 
-	Filmes
-WHERE Duracao > 100 AND Duracao < 150
-ORDER BY Duracao;
+    Filmes
+WHERE Duracao BETWEEN 101 AND 149
+ORDER BY Duracao ASC;
 
--- 7 - Buscar a quantidade de filmes lan�adas no ano, agrupando por ano, ordenando pela duracao em ordem decrescente
+-- 7 - Contar o número de filmes lançados a cada ano, ordenados pela soma da duração em ordem decrescente
 SELECT
-	Ano,
-	COUNT(Ano) Quantidade
+    Ano,
+    COUNT(*) AS Quantidade
 FROM
-	Filmes
+    Filmes
 GROUP BY
-	Ano
+    Ano
 ORDER BY 
-	SUM(Duracao) DESC;
+    SUM(Duracao) DESC;
 
-
--- 8 - Buscar os Atores do g�nero masculino, retornando o PrimeiroNome, UltimoNome
+-- 8 - Obter atores do gênero masculino, retornando o primeiro nome e o sobrenome
 SELECT
-	Id, PrimeiroNome, UltimoNome
+    Id, PrimeiroNome, UltimoNome
 FROM
-	Atores
+    Atores
 WHERE
-	Genero = 'M';
+    Genero = 'M';
 
-
--- 9 - Buscar os Atores do g�nero feminino, retornando o PrimeiroNome, UltimoNome, e ordenando pelo PrimeiroNome
+-- 9 - Obter atrizes, retornando o primeiro nome e o sobrenome, ordenando pelo primeiro nome
 SELECT
-	Id, PrimeiroNome, UltimoNome
+    Id, PrimeiroNome, UltimoNome
 FROM
-	Atores
+    Atores
 WHERE
-	Genero = 'F'
+    Genero = 'F'
 ORDER BY
-	PrimeiroNome;
+    PrimeiroNome;
 
--- 10 - Buscar o nome do filme e o g�nero
+-- 10 - Obter o título do filme e o gênero
 SELECT
-	Nome, Generos.Genero
+    Filmes.Titulo, Generos.Descricao AS Genero
 FROM
-	Filmes
+    Filmes
 INNER JOIN
-	FilmesGenero ON Filmes.Id = FilmesGenero.IdFilme 
-		INNER JOIN Generos ON FilmesGenero.IdGenero = Generos.Id;
+    FilmesGenero ON Filmes.Id = FilmesGenero.IdFilme
+INNER JOIN 
+    Generos ON FilmesGenero.IdGenero = Generos.Id;
 
--- 11 - Buscar o nome do filme e o g�nero do tipo "Mist�rio"
+-- 11 - Obter o título do filme e o gênero "Mistério"
 SELECT
-	Nome, Generos.Genero
+    Filmes.Titulo, Generos.Descricao AS Genero
 FROM
-	Filmes
-	INNER JOIN FilmesGenero ON Filmes.Id = FilmesGenero.IdFilme 
-			INNER JOIN Generos ON FilmesGenero.IdGenero = Generos.Id
-WHERE Genero = 'Mist�rio';
+    Filmes
+INNER JOIN
+    FilmesGenero ON Filmes.Id = FilmesGenero.IdFilme
+INNER JOIN 
+    Generos ON FilmesGenero.IdGenero = Generos.Id
+WHERE Generos.Descricao = 'Mistério';
 
--- 12 - Buscar o nome do filme e os atores, trazendo o PrimeiroNome, UltimoNome e seu Papel
+-- 12 - Obter o título do filme e os atores, incluindo o primeiro nome, o sobrenome e o papel desempenhado
 SELECT
-	Nome, Atores.PrimeiroNome, Atores.UltimoNome, ElencoFilme.Papel
+    Filmes.Titulo, Atores.PrimeiroNome, Atores.UltimoNome, ElencoFilme.Papel
 FROM
-	Filmes
-	INNER JOIN ElencoFilme ON Filmes.Id = ElencoFilme.IdFilme
-		INNER JOIN Atores ON ElencoFilme.IdAtor = Atores.Id
+    Filmes
+INNER JOIN 
+    ElencoFilme ON Filmes.Id = ElencoFilme.IdFilme
+INNER JOIN 
+    Atores ON ElencoFilme.IdAtor = Atores.Id;
+
